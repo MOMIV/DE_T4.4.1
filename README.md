@@ -43,12 +43,20 @@
 Решение:
 
 1. «Схлопываем» файлы:
+
 K:\DE_Projects\docker-hadoop-hive-parquet>copy *.txt vim.txt
+
 voyna-i-mir-tom-1.txt
+
 voyna-i-mir-tom-2.txt
+
 voyna-i-mir-tom-3.txt
+
 voyna-i-mir-tom-4.txt
+
 Скопировано файлов:         1.
+
+
 2. Подключаемся к контейнеру «datanode-1»
 
 K:\DE_Projects\docker-hadoop-hive-parquet>docker exec -it a863ff5aaf4b bash
@@ -56,6 +64,7 @@ K:\DE_Projects\docker-hadoop-hive-parquet>docker exec -it a863ff5aaf4b bash
 root@a863ff5aaf4b:/# ls
 
 bin  boot  dev  entrypoint.sh  etc  hadoop  hadoop-data  home  lib  lib64  media  mnt  opt  proc  root  run  run.sh  sbin  srv  sys  tmp  usr  var
+
 
 3. Создаем внутри «datanode-1» папку 
 
@@ -65,11 +74,13 @@ root@a863ff5aaf4b:/# ls
 
 bin  boot  dev  entrypoint.sh  etc  hadoop  hadoop-data  home  lib  lib64  media  mnt  opt  proc  root  run  run.sh  sbin  srv  sys  tmp  usr  var  vim
 
-4. Переносим в паку наш файл
+
+4. Переносим в папку наш файл
 
 K:\DE_Projects\docker-hadoop-hive-parquet>docker cp K:\DE_Projects\docker-hadoop-hive-parquet\vim.txt a863ff5aaf4b:vim
 
 Successfully copied 3.05MB to a863ff5aaf4b:vim
+
 
 K:\DE_Projects\docker-hadoop-hive-parquet>docker exec -it a863ff5aaf4b bash
 root@a863ff5aaf4b:/# cd vim
@@ -78,11 +89,13 @@ root@a863ff5aaf4b:/vim# ls
 
 vim.txt
 
+
 5. Загружаем файл на hdfs в свою личную папку
 
 root@a863ff5aaf4b:/vim# hadoop fs -put  vim.txt /user/momiv
 
 ![Image alt](https://github.com/MOMIV/DE_T4.4.1/raw/main/pic/1.png)
+
 
 
 6. Выводим содержимое  личной папки
@@ -93,9 +106,13 @@ Found 1 items
 
 -rw-r--r--   3 root momiv    3048009 2023-11-17 19:40 /user/momiv/vim.txt
 
+
+
 7. Установим режим доступа, который дает полный доступ для владельца файла, а для сторонних пользователей возможность читать и выполнять.
 
 root@a863ff5aaf4b:/vim# hadoop fs -chmod 755 /user/momiv/vim.txt
+
+
 
 8. Выводим содержимое  личной папки повторно
 
@@ -105,15 +122,21 @@ Found 1 items
 
 -rwxr-xr-x   3 root momiv    3048009 2023-11-17 19:40 /user/momiv/vim.txt
 
+
+
 9. Выводим на экран информацию о том, сколько места на диске занимает наш файл
 
 root@a863ff5aaf4b:/vim# hadoop fs -du -s -h /user/momiv/vim.txt
 
 2.9 M  /user/momiv/vim.txt
 
+
+
 10. Изменим фактор репликации на 2
 
 root@a863ff5aaf4b:/vim# hadoop fs -setrep 3 /user/momiv/vim.txt
+
+
 
 11. Выводим на экран информацию о том, сколько места на диске занимает наш файл
 
@@ -123,9 +146,12 @@ Found 1 items
 
 -rwxr-xr-x   2 root momiv    3048009 2023-11-17 19:40 /user/momiv/vim.txt
 
+
 root@a863ff5aaf4b:/vim# hadoop fs -du -h /user/momiv/vim.txt
 
 2.9 M  /user/momiv/vim.txt
+
+
 
 12. Подсчитаем количество строк в произведении «Война и мир»
 
